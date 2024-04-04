@@ -1,0 +1,14 @@
+C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\mysticWoods.GeneratedMSBuildEditorConfig.editorconfig
+C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\mysticWoods.AssemblyInfoInputs.cache
+C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\mysticWoods.AssemblyInfo.cs
+C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\mysticWoods.csproj.CoreCompileInputs.cache
+C:\Github\innleveringer\mysticWoods\bin\Debug\net8.0\mysticWoods.exe
+C:\Github\innleveringer\mysticWoods\bin\Debug\net8.0\mysticWoods.deps.json
+C:\Github\innleveringer\mysticWoods\bin\Debug\net8.0\mysticWoods.runtimeconfig.json
+C:\Github\innleveringer\mysticWoods\bin\Debug\net8.0\mysticWoods.dll
+C:\Github\innleveringer\mysticWoods\bin\Debug\net8.0\mysticWoods.pdb
+C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\mysticWoods.dll
+C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\refint\mysticWoods.dll
+C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\mysticWoods.pdb
+C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\mysticWoods.genruntimeconfig.cache
+C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\ref\mysticWoods.dll
