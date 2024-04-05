@@ -17,7 +17,7 @@ class Program
             Console.WriteLine("Please enter your username:");
             Console.WriteLine();
 
-            string? username = Console.ReadLine(); // Added ? to say: Im aware it can be null, I deal with it later (in my if statement).
+            string? username = Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(username))
             {
@@ -26,22 +26,23 @@ class Program
                 return;
             }
 
-            var (lifeLevel, distanceLoaded) = DatabaseManager.LoadProgress(username); // distanceLoaded is local name, can be named anything, is variable distance saved.
-            if (lifeLevel > 0)
+            var (lifeLevel, distanceLoaded) = DatabaseManager.LoadProgress(username);
+            if (lifeLevel.HasValue && distanceLoaded.HasValue) // Check if values are not null
             {
-                player = new MainCharacter(username, lifeLevel);
-                distance = distanceLoaded;
+                player = new MainCharacter(username, lifeLevel.Value);
+                distance = distanceLoaded.Value;
                 Console.Clear();
                 Console.WriteLine($"Welcome back {player.Name}. \n Your lifeLevel is {player.LifeLevel}. \nYou have covered a distance of {distance} meters in the forest. Move carefully and stay safe!");
             }
             else
             {
                 Console.Clear();
-                Console.WriteLine("No saved game found for this username, starting a new game.");
+                Console.WriteLine("User not found. Game has been terminated.");
+                return; // Exit the program if no user or progress found
             }
         }
 
-        if (player == null) // This means either they chose not to restore, or the username wasn't found
+        if (player == null) // This means no restoration was done, either by choice or username not found
         {
             Console.Clear();
             Console.WriteLine("What is your name?");
@@ -54,21 +55,23 @@ class Program
             }
 
             player = new MainCharacter(characterName, 100);
-            DatabaseManager.SaveProgress(player.Name, player.LifeLevel, 0); // Auto save
+            DatabaseManager.SaveProgress(player.Name, player.LifeLevel, 0);
             Console.WriteLine();
             Console.Clear();
             Console.WriteLine($"Welcome {player.Name}. Your life level is {player.LifeLevel}.");
             Console.WriteLine();
-            Console.WriteLine("INFO:\nAuto save has been performed. \nClick 's' when you want to save during the game.\nRemember your user name to restore.");
+            Console.WriteLine("Objective: Survive walking 500m in the forest!");
+            Console.WriteLine();
+            Console.WriteLine("INFO:\nAuto save has been performed. \nClick 's' to save during the game and 'q' to quit.\nRemember your user name to restore and continue later.");
         }
         Console.WriteLine();
-        Console.WriteLine("Walk using keyboard arrows. \nPress 's' to save and 'q' to quit.");
+        Console.WriteLine("Walk using keyboard arrows.");
         Console.WriteLine();
 
         bool isRunning = true;
         while (isRunning)
         {
-            ConsoleKeyInfo keyInfo = Console.ReadKey(true); // The 'true' parameter prevents the key from being displayed.
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             string direction = "";
 
             switch (keyInfo.Key)
@@ -87,7 +90,6 @@ class Program
             if (!string.IsNullOrEmpty(direction))
             {
                 isRunning = Navigation.NavigateAndCheckForEncounter(direction, player, ref distance);
-                Console.Clear();
                 Console.WriteLine($"Total distance moved: {distance} meters.");
             }
 

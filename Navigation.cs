@@ -5,7 +5,7 @@ public static class Navigation
         distance += 10;
         Random random = new Random();
         int encounterChance = random.Next(1, 7);
-
+        Console.WriteLine();
         Console.WriteLine($"You moved 10m {direction}.");
 
         if (encounterChance == 6)
@@ -13,7 +13,7 @@ public static class Navigation
             int damage = random.Next(1, 101);
             player.LifeLevel = Math.Max(0, player.LifeLevel - damage);
 
-            Console.WriteLine($"A mysterious monster attacked you (-{damage}! Your life level is now {player.LifeLevel}");
+            Console.WriteLine($"A mysterious monster attacked you (-{damage}! Your life level is now {player.LifeLevel})\n Press 'q' if you are too scared to continue.");
 
             if (player.LifeLevel <= 0)
             {
@@ -23,7 +23,7 @@ public static class Navigation
         }
         else
         {
-            Console.WriteLine("You may continue if you dare, press 'q' if you are too scared to continue.");
+            Console.WriteLine("Brave enough to continue? \nPress 'q' if you are scared.");
         }
 
         // Check for victory condition

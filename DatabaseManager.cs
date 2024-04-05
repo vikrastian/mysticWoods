@@ -32,14 +32,17 @@ public static class DatabaseManager
         }
     }
 
-
     // Save game progress for a user
     public static void SaveProgress(string name, int lifeLevel, int distance)
     {
-        // First, find or create the user in the database
         int userId = EnsureUserExists(name);
 
-        // Then, insert the progress record
+        if (userId == -1) // Check if user was not found and not created
+        {
+            Console.WriteLine("User does not exist, cannot save progress.");
+            return; // Exit the method if user doesn't exist
+        }
+
         using (var connection = new SqliteConnection($"Data Source={dbFileName}"))
         {
             connection.Open();
@@ -53,9 +56,14 @@ public static class DatabaseManager
     }
 
     // Load the latest game progress for a user
-    public static (int LifeLevel, int Distance) LoadProgress(string name)
+    public static (int? LifeLevel, int? Distance) LoadProgress(string name)
     {
-        int userId = EnsureUserExists(name);
+        int userId = EnsureUserExists(name, checkOnly: true); // Modified to use checkOnly parameter
+
+        if (userId == -1) // If user does not exist, return nulls.
+        {
+            return (null, null);
+        }
 
         using (var connection = new SqliteConnection($"Data Source={dbFileName}"))
         {
@@ -68,25 +76,24 @@ public static class DatabaseManager
             {
                 if (reader != null && reader.Read())
                 {
-                    int lifeLevel = reader.IsDBNull(0) ? 100 : reader.GetInt32(0); // Use default value if null
-                    int distance = reader.IsDBNull(1) ? 0 : reader.GetInt32(1); // Use default value if null
+                    int lifeLevel = reader.IsDBNull(0) ? 100 : reader.GetInt32(0);
+                    int distance = reader.IsDBNull(1) ? 0 : reader.GetInt32(1);
                     return (lifeLevel, distance);
                 }
             }
         }
 
-        // Return default values if no progress found
-        return (100, 0);
+        // Return null if no progress found
+        return (null, null);
     }
 
-    // Ensure a user exists in the database and return the UserID
-    private static int EnsureUserExists(string name)
+    // Ensure a user exists in the database and return the UserID, with an option to only check for existence
+    private static int EnsureUserExists(string name, bool checkOnly = false)
     {
         using (var connection = new SqliteConnection($"Data Source={dbFileName}"))
         {
             connection.Open();
 
-            // Check if user already exists
             var checkCommand = connection.CreateCommand();
             checkCommand.CommandText = "SELECT UserID FROM Users WHERE Name = @Name";
             checkCommand.Parameters.AddWithValue("@Name", name);
@@ -95,27 +102,26 @@ public static class DatabaseManager
             {
                 if (reader != null && reader.Read())
                 {
-                    return reader.GetInt32(0); // Non-nullable, assuming UserID is never null
+                    return reader.GetInt32(0); // Return UserID if user exists
                 }
             }
 
-            // If not, insert new user
+            if (checkOnly)
+            {
+                return -1; // Return -1 if user not found and checkOnly is true
+            }
+
             var insertCommand = connection.CreateCommand();
             insertCommand.CommandText = "INSERT INTO Users (Name, Password) VALUES (@Name, @Password)";
             insertCommand.Parameters.AddWithValue("@Name", name);
             insertCommand.Parameters.AddWithValue("@Password", "123");
             insertCommand.ExecuteNonQuery();
 
-            // Retrieve and return the new UserID
-            long userId;
             using (var cmd = new SqliteCommand("SELECT last_insert_rowid()", connection))
             {
                 var result = cmd.ExecuteScalar();
-                userId = result is long id ? id : -1; // Checks if 'result' is of type long and assigns its value to 'userId' if it is; otherwise assigns -1 to indicate an error or absence of data.
-
+                return (int)(result is long id ? id : -1); // Return new UserID or -1 if an error occurred
             }
-            return (int)userId;
         }
     }
-
 }
