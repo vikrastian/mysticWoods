@@ -3,13 +3,12 @@ public class Character
 {
     public string Name { get; set; }
     public int LifeLevel { get; set; }
-    public int Armour { get; set; }
 
-    public Character(string name, int lifeLevel, int armour)
+
+    public Character(string name, int lifeLevel)
     {
         Name = name;
         LifeLevel = lifeLevel;
-        Armour = armour;
     }
 
     public void Scream()
@@ -20,16 +19,9 @@ public class Character
 
 public class MainCharacter : Character
 {
-    public MainCharacter(string name, int lifeLevel, int armour) : base(name, lifeLevel, armour)
+    public MainCharacter(string name, int lifeLevel) : base(name, lifeLevel)
     {
 
     }
 }
 
-public class EvilCharacter : Character
-{
-    public EvilCharacter(string name, int lifeLevel, int armour) : base(name, lifeLevel, armour)
-    {
-
-    }
-}
