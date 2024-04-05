@@ -1,5 +1,5 @@
 using System;
-using Microsoft.Data.Sqlite;
+using Microsoft.Data.Sqlite; // Lagt til i cmd: dotnet add package Microsoft.Data.Sqlite
 
 public static class DatabaseManager
 {
@@ -112,7 +112,7 @@ public static class DatabaseManager
             {
                 var result = cmd.ExecuteScalar();
                 userId = result is long id ? id : -1; // Checks if 'result' is of type long and assigns its value to 'userId' if it is; otherwise assigns -1 to indicate an error or absence of data.
- 
+
             }
             return (int)userId;
         }
