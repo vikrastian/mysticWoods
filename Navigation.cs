@@ -6,7 +6,7 @@ public static class Navigation
         Random random = new Random();
         int encounterChance = random.Next(1, 7);
 
-        Console.WriteLine($"You move {direction}.");
+        Console.WriteLine($"You moved 10m {direction}.");
 
         if (encounterChance == 6)
         {

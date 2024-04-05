@@ -13,6 +13,7 @@ class Program
 
         if (restoreChoice == "yes")
         {
+            Console.WriteLine();
             Console.WriteLine("Please enter your username:");
             string username = Console.ReadLine();
 
@@ -27,20 +28,18 @@ class Program
             {
                 player = new MainCharacter(username, lifeLevel);
                 distance = distanceLoaded;
-                Console.WriteLine($"Welcome back {player.Name}. Your lifeLevel is {player.LifeLevel} and you have covered a distance of {distance} meters in the forest. Move carefully and stay safe!");
                 Console.WriteLine();
-
+                Console.WriteLine($"Welcome back {player.Name}. Your lifeLevel is {player.LifeLevel} and you have covered a distance of {distance} meters in the forest. Move carefully and stay safe!");
             }
             else
             {
                 Console.WriteLine("No saved game found for this username, starting a new game.");
-                Console.WriteLine();
-
             }
         }
 
         if (player == null) // This means either they chose not to restore, or the username wasn't found
         {
+            Console.WriteLine();
             Console.WriteLine("What is your name?");
             string characterName = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(characterName))
@@ -51,15 +50,12 @@ class Program
 
             player = new MainCharacter(characterName, 100);
             DatabaseManager.SaveProgress(player.Name, player.LifeLevel, 0); // Initial save for new game
-            Console.WriteLine("Your player has been created and an auto save has been performed. \n Click 's' when you want to save during the game.");
-            Console.WriteLine();
-
+            Console.WriteLine($"Welcome {player.Name}, ready to brave the mystic woods? Your life level is {player.LifeLevel}.");
+            Console.WriteLine("Your player has been created and an auto save has been performed. Click 's' when you want to save during the game.");
         }
 
-        Console.WriteLine($"Welcome {player.Name} you have chosen to enter the mystic woods. \nYour life level is {player.LifeLevel}. \nFor your own safety, we only allow you to go 10m in each direction. \n \nLet the game begin.");
-        Console.WriteLine("Use keyboard arrows to move your character in 10m increments to the forward, left, right. \nPress 'q' to quit.");
+        Console.WriteLine("Walk using keyboard arrows. \nPress 's' to save and 'q' to quit.");
         Console.WriteLine();
-
 
         bool isRunning = true;
         while (isRunning)
@@ -84,29 +80,22 @@ class Program
             {
                 isRunning = Navigation.NavigateAndCheckForEncounter(direction, player, ref distance);
                 Console.WriteLine($"Total distance moved: {distance} meters.");
-                Console.WriteLine();
-
             }
 
             if (keyInfo.Key == ConsoleKey.S)
             {
                 DatabaseManager.SaveProgress(player.Name, player.LifeLevel, distance);
                 Console.WriteLine("Game saved successfully!");
-                Console.WriteLine();
-
             }
             else if (keyInfo.Key == ConsoleKey.Q)
             {
-                Console.WriteLine("Chicken, did you get scared? The game has been exited.");
-                Console.WriteLine();
+                Console.WriteLine("Exiting the game. Stay safe in the real world!");
                 isRunning = false;
             }
-            else if (string.IsNullOrEmpty(direction))
-            {
-                Console.WriteLine("Invalid choice of direction. Please select 'f', 'l', 'r', or 'q' to quit.");
-                Console.WriteLine();
-
-            }
+            // else if (string.IsNullOrEmpyty(direction))
+            // {
+            //     Console.WriteLine("Invalid choice of direction. Use arrows to move, 's' to save, and 'q' to quit.");
+            // }
         }
     }
 }
