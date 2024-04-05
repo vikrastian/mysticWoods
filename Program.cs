@@ -6,6 +6,8 @@ class Program
     {
         DatabaseManager.InitializeDatabase();
 
+        
+
         bool isRunning = true;
         string intro = "You have reached the entrance of the Mystic Woods - do you dare to enter? (Yes/No)";
         foreach (char c in intro)
@@ -42,7 +44,7 @@ class Program
         }
         else
         {
-            Console.WriteLine("Invalid character, are you shaking from fear? This forest is not for you.");
+            Console.WriteLine("Invalid character, are you shaking from fear? This forest is not for you. Goodbye!");
             return;
         }
 
@@ -53,6 +55,11 @@ class Program
         // Assuming MainCharacter is properly defined and following the updated Character class structure
         MainCharacter player = new MainCharacter(characterName, 100);
 
+        // Auto-save after creating the new character
+        DatabaseManager.SaveProgress(player.Name, player.LifeLevel, 0); // Distance is 0 since the character just started
+        Console.WriteLine("Your player has been created and an auto save has been performed. \n click s when you want to want to save during the game. ");
+
+
         // Updated to use properties, assuming you've followed the previous advice on encapsulation
         Console.WriteLine($"Welcome {player.Name} you have chosen to enter the mystic woods. \nYour life level is {player.LifeLevel} \nFor your own safety we only allow you to go 10m in each direction. \n Let the game begin.");
 
@@ -61,7 +68,6 @@ class Program
 
         while (isRunning)
         {
-            Console.WriteLine("Choose your direction by using keyboard arrows (left, right, forward). ");
             ConsoleKeyInfo keyInfo = Console.ReadKey(true); // The 'true' parameter prevents the key from being displayed.
             string direction = ""; // Initialize an empty string to store the direction.
             // string direction = Console.ReadLine()?.ToLower() ?? "";
