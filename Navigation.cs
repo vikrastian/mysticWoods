@@ -11,7 +11,7 @@ public static class Navigation
         if (encounterChance == 6)
         {
             int damage = random.Next(1, 101);
-            player.LifeLevel -= damage; // Notice the use of the property here
+            player.LifeLevel = Math.Max(0, player.LifeLevel - damage);
 
             Console.WriteLine($"A mysterious monster attacked you (-{damage}! Your life level is now {player.LifeLevel}");
 
@@ -23,8 +23,16 @@ public static class Navigation
         }
         else
         {
-            Console.WriteLine("You may continue if you dare, press q if you are too scared to continue.");
+            Console.WriteLine("You may continue if you dare, press 'q' if you are too scared to continue.");
         }
+
+        // Check for victory condition
+        if (distance >= 500)
+        {
+            Console.WriteLine("Congratulations! You have survived 500 meters in the forest and won the game!");
+            return false; // End the game
+        }
+
         return true; // Game should continue
     }
 }
