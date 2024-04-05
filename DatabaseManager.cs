@@ -66,10 +66,10 @@ public static class DatabaseManager
 
             using (var reader = command.ExecuteReader())
             {
-                if (reader.Read())
+                if (reader != null && reader.Read())
                 {
-                    int lifeLevel = reader.GetInt32(0);
-                    int distance = reader.GetInt32(1);
+                    int lifeLevel = reader.IsDBNull(0) ? 100 : reader.GetInt32(0); // Use default value if null
+                    int distance = reader.IsDBNull(1) ? 0 : reader.GetInt32(1); // Use default value if null
                     return (lifeLevel, distance);
                 }
             }
@@ -93,9 +93,9 @@ public static class DatabaseManager
 
             using (var reader = checkCommand.ExecuteReader())
             {
-                if (reader.Read())
+                if (reader != null && reader.Read())
                 {
-                    return reader.GetInt32(0);
+                    return reader.GetInt32(0); // Non-nullable, assuming UserID is never null
                 }
             }
 
@@ -110,9 +110,12 @@ public static class DatabaseManager
             long userId;
             using (var cmd = new SqliteCommand("SELECT last_insert_rowid()", connection))
             {
-                userId = (long)cmd.ExecuteScalar();
+                var result = cmd.ExecuteScalar();
+                userId = result is long id ? id : -1; // Checks if 'result' is of type long and assigns its value to 'userId' if it is; otherwise assigns -1 to indicate an error or absence of data.
+ 
             }
             return (int)userId;
         }
     }
+
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("mysticWoods")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1204f37ba16f1d8599283c0b781b31436d77a09b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+556ef06f8f915518e53653ecd86ed87196984548")]
 [assembly: System.Reflection.AssemblyProductAttribute("mysticWoods")]
 [assembly: System.Reflection.AssemblyTitleAttribute("mysticWoods")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

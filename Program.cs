@@ -8,14 +8,14 @@ class Program
 
         Console.WriteLine("Do you want to restore a saved game? (yes/no)");
         string restoreChoice = Console.ReadLine()?.ToLower() ?? "";
-        MainCharacter player = null; // Declare player variable here for wider scope
-        int distance = 0; // Declare distance variable here for wider scope
+        MainCharacter? player = null;
+        int distance = 0;
 
         if (restoreChoice == "yes")
         {
             Console.WriteLine();
             Console.WriteLine("Please enter your username:");
-            string username = Console.ReadLine();
+            string? username = Console.ReadLine(); // Added ? to say: Im aware it can be null, I deal with it later (in my if statement).
 
             if (string.IsNullOrWhiteSpace(username))
             {
@@ -41,7 +41,7 @@ class Program
         {
             Console.WriteLine();
             Console.WriteLine("What is your name?");
-            string characterName = Console.ReadLine();
+            string? characterName = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(characterName))
             {
                 Console.WriteLine("Username cannot be empty.");
@@ -92,10 +92,6 @@ class Program
                 Console.WriteLine("Exiting the game. Stay safe in the real world!");
                 isRunning = false;
             }
-            // else if (string.IsNullOrEmpyty(direction))
-            // {
-            //     Console.WriteLine("Invalid choice of direction. Use arrows to move, 's' to save, and 'q' to quit.");
-            // }
         }
     }
 }
