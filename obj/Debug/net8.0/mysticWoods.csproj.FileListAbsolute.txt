@@ -12,3 +12,4 @@ C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\refint\mysticWoods.dll
 C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\mysticWoods.pdb
 C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\mysticWoods.genruntimeconfig.cache
 C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\ref\mysticWoods.dll
+C:\Github\innleveringer\mysticWoods\obj\Debug\net8.0\mysticWoods.sourcelink.json

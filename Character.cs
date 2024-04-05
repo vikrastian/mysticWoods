@@ -1,19 +1,20 @@
 // Base class for characters
 public class Character
 {
-    public string name = "";
-    public int lifeLevel = 100;
-    public int armour = 0;
+    public string Name { get; set; }
+    public int LifeLevel { get; set; }
+    public int Armour { get; set; }
 
     public Character(string name, int lifeLevel, int armour)
     {
-        this.name = name;
-        this.lifeLevel = lifeLevel;
-        this.armour = armour;
+        Name = name;
+        LifeLevel = lifeLevel;
+        Armour = armour;
     }
-    public void scream()
+
+    public void Scream()
     {
-        Console.WriteLine($"{name} screaming");
+        Console.WriteLine($"{Name} screaming");
     }
 }
 
