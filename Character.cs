@@ -3,7 +3,7 @@ public class Character
 {
     public string Name { get; set; }
     public int LifeLevel { get; set; }
- // TEst
+
 
     public Character(string name, int lifeLevel)
     {

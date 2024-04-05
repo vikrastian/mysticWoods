@@ -6,6 +6,17 @@ class Program
     {
         DatabaseManager.InitializeDatabase();
         Console.Clear();
+
+        // Display welcome message and top 3 high scores at the beginning of the game
+        Console.WriteLine("Welcome to the game Mystic Woods. \nDo you have what it takes to beat our high scores?");
+        Console.WriteLine();
+
+        // Display top 3 high scores at the beginning of the game
+        DisplayTopScores();
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+
+        Console.Clear();
         Console.WriteLine("Do you want to restore a saved game? (yes/no)");
         string restoreChoice = Console.ReadLine()?.ToLower() ?? "";
         MainCharacter? player = null;
@@ -27,22 +38,22 @@ class Program
             }
 
             var (lifeLevel, distanceLoaded) = DatabaseManager.LoadProgress(username);
-            if (lifeLevel.HasValue && distanceLoaded.HasValue) // Check if values are not null
+            if (lifeLevel.HasValue && distanceLoaded.HasValue)
             {
                 player = new MainCharacter(username, lifeLevel.Value);
                 distance = distanceLoaded.Value;
                 Console.Clear();
-                Console.WriteLine($"Welcome back {player.Name}. \n Your lifeLevel is {player.LifeLevel}. \nYou have covered a distance of {distance} meters in the forest. Move carefully and stay safe!");
+                Console.WriteLine($"Welcome back {player.Name}. Your lifeLevel is {player.LifeLevel}. You have covered a distance of {distance} meters in the forest. Move carefully and stay safe!");
             }
             else
             {
                 Console.Clear();
                 Console.WriteLine("User not found. Game has been terminated.");
-                return; // Exit the program if no user or progress found
+                return;
             }
         }
 
-        if (player == null) // This means no restoration was done, either by choice or username not found
+        if (player == null)
         {
             Console.Clear();
             Console.WriteLine("What is your name?");
@@ -56,17 +67,13 @@ class Program
 
             player = new MainCharacter(characterName, 100);
             DatabaseManager.SaveProgress(player.Name, player.LifeLevel, 0);
-            Console.WriteLine();
             Console.Clear();
-            Console.WriteLine($"Welcome {player.Name}. Your life level is {player.LifeLevel}.");
-            Console.WriteLine();
-            Console.WriteLine("Objective: Survive walking 500m in the forest!");
-            Console.WriteLine();
-            Console.WriteLine("INFO:\nAuto save has been performed. \nClick 's' to save during the game and 'q' to quit.\nRemember your user name to restore and continue later.");
+            Console.WriteLine($"Welcome {player.Name}! \nYour life level is {player.LifeLevel}.");
+            Console.WriteLine("\nObjective: Survive walking 500m in the forest!");
+            Console.WriteLine("\nINFO: \nAuto save has been performed. \nClick 's' to save during the game and 'q' to quit. \nRemember your user name to restore and continue later.");
         }
-        Console.WriteLine();
-        Console.WriteLine("Walk using keyboard arrows.");
-        Console.WriteLine();
+
+        Console.WriteLine("\nWalk using keyboard arrows.");
 
         bool isRunning = true;
         while (isRunning)
@@ -102,9 +109,25 @@ class Program
             else if (keyInfo.Key == ConsoleKey.Q)
             {
                 Console.Clear();
+                DatabaseManager.SaveHighScore(player.Name, distance); // Saving the high score upon quitting
                 Console.WriteLine("Exiting the game. Stay safe in the real world!");
                 isRunning = false;
             }
         }
+
+        // Optionally display high score here
+        var highScore = DatabaseManager.GetHighScore(player.Name);
+        Console.WriteLine($"Your high score is: {highScore} meters. Well done!");
+    }
+
+    static void DisplayTopScores()
+    {
+        var topThreeScores = DatabaseManager.GetTopThreeHighScores();
+        Console.WriteLine("Top 3 High Scores:");
+        foreach (var score in topThreeScores)
+        {
+            Console.WriteLine(score);
+        }
+        Console.WriteLine(); // Add a newline for better formatting
     }
 }
